@@ -28,3 +28,15 @@ Caveats and Pitfalls of ng-if
 **Sometimes initialization is more expensive than keeping things around**: That’s to say that in some cases the cost of removing the element from the DOM and then recreating it to add again can be a heavy operation all by itself. In those cases you might feel that it takes too long for the element to reappear. In those cases this trick might actually degrade your app’s performance, so remember to check and measure!
 
 That’s it. Enjoy making your app a bit snappier. If you care about performance in Angular you really should read about speeding ng-repeat with the track by syntax.
+
+# DOM - Change Detection #
+
+In order to guarantee that the DOM always shows the very latest available data, Angular monkey-patches every entry point to running Javascript with a Zone. So any time Javascript finishes executing—meaning an AJAX request completes, a click event handler runs, or a Promise is fulfilled—Angular 2 checks whether any changes have occurred that would affect the DOM.
+
+When the change detector runs on an Angular 2 component or directive, it evaluates every Javascript expression in that component’s view template (or the “host” entry on the @Component or @Directive decorator settings). It then compares the output of each expression to its previous output. If the result of an expression has changed, Angular 2 updates the DOM accordingly.
+
+As the application grows, things may start to lag a bit. If you have drag & drop in your interface, you may find that you’re no longer getting silky-smooth 60FPS updates as you drag elements around. Eventually you’ll run a profiler on your code to see what’s slow, and you’ll find something that looks like this:
+
+- [ ] TODO add diagram of how the change detection stuff actual works in cycle
+
+[Change Detection Mess](https://1drv.ms/u/s!AstPH6dB0Clt6ETlDq29YwlFBJ4-)
