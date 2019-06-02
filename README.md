@@ -40,3 +40,41 @@ As the application grows, things may start to lag a bit. If you have drag & drop
 - [ ] TODO add diagram of how the change detection stuff actual works in cycle
 
 [Change Detection Mess](https://1drv.ms/u/s!AstPH6dB0Clt6ETlDq29YwlFBJ4-)
+
+- Have less DOM. This is a critically important piece of the puzzle. If DOM elements aren’t visible, you should remove them from the DOM by using *ngIf instead of simply hiding elements with CSS. As the saying goes, the fastest code is code that is not run—and the fastest DOM is DOM that doesn’t exist.
+- Make your expressions faster. Move complex calculations into the ngDoCheck lifecycle hook, and refer to the calculated value in your view. Cache results to complex calculations as long as possible.
+-Use the OnPush change detection strategy to tell Angular there have been no changes. This lets you skip the entire change detection step on most of your application most of the time.
+
+** USE ONPUSH CHANGE DETECTION STRATEGY **
+
+By default, the change detection strategy on any component or directive is CheckAlways. There is another strategy, OnPush, which can be much more efficient if you build your application carefully.
+
+OnPush means that the change detector will only run on a component or directive if one of the following occurs:
+
+- An input property has changed to a new value
+- An event handler fired in the component or directive
+- You manually tell the change detector to look for changes
+- The change detector of a child component or directive runs
+
+If you’re able to use OnPush throughout your application, you will ideally only ever run the change detector on components that have actually changed (and their direct ancestors). This reduces the time complexity of the change detector from O(n) to O(log n) in the number of component instances in your application.
+
+**Method 1: Only use immutable inputs**
+When you use OnPush, the change detector will run whenever an input property changes. !!!However, if you pass an object or array as an input to a component (which is very common), the change detector will not notice if something in that object or array changes. It only detects when you change to a different object entirely!!!.
+
+The simplest way to make OnPush work perfectly is to use immutable objects throughout a component. If you change an object you are passing to a component, don’t change its properties in place; rather, construct a copy with the change applied.
+
+When the component is constructed, we inject our observable user, a change detector, and the zone. Whenever changes happen on our user, we mark the change detector as needing to be checked within the Angular 2 zone. It’s important to do this if your change callback can come from outside the Angular 2 zone, which does happen regularly in our application.
+
+If the user is passed into the component as a property, we have to watch for changes with the ngOnChanges lifecycle hook, and unbind and rebind changes appropriately.
+```
+@Component({selector: 'my-cmp', template: `...`})
+class MyComponent implements OnChanges {
+  // TODO(issue/24571): remove '!'.
+  @Input()
+  prop !: number;
+
+  ngOnChanges(changes: SimpleChanges) {
+    // changes.prop contains the old and the new value...
+  }
+}
+```
