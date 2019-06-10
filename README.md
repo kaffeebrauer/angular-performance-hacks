@@ -1,6 +1,10 @@
 # angular-performance-hacks
 Some topics of discussion on how to improve your Angular Application v7.0 onwards
 
+# General Tips
+
+Always look to update, at the current stage with Angular 8 (compared with Angular 7), differential loading with reduce bundles for polyfills by 20%. The Ivy render which is currently in experimental stage, which can be incorporated into your Angular 8 app if you choose so creates a Hello World app in 17Kb.
+
 # Angular NG-Show v NG-If
 You’ve probably come across **ng-if** and **ng-show** and wondered why they both exist and what’s the difference between them. After all they usually have the same behavior as far as the user is concerned.
 
