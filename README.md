@@ -3,7 +3,10 @@ Some topics of discussion on how to improve your Angular Application v7.0 onward
 
 # General Tips
 
-Always look to update, at the current stage with Angular 8 (compared with Angular 7), differential loading with reduce bundles for polyfills by 20%. The Ivy render which is currently in experimental stage, which can be incorporated into your Angular 8 app if you choose so creates a Hello World app in 17Kb.
+Always look to update, at the current stage with Angular 8 (compared with Angular 7), differential loading with reduce bundles for polyfills by 20%. The Ivy render which is currently in experimental stage, which can be incorporated into your Angular 8 app if you choose so creates a Hello World app in 2.7Kb.
+
+# Runtime performance
+Use chrome dev tools => performance tab: start recording. Dev tools will see which functions are invokes and how often
 
 # Angular NG-Show v NG-If
 You’ve probably come across **ng-if** and **ng-show** and wondered why they both exist and what’s the difference between them. After all they usually have the same behavior as far as the user is concerned.
@@ -82,3 +85,10 @@ class MyComponent implements OnChanges {
   }
 }
 ```
+
+Immutable.js helps which collections.
+
+# Pipes in Angular
+- pure pipes = date pipe
+- impure pipes = async (it holds some state internally, so it holds a reference to the promise or observable)
+
