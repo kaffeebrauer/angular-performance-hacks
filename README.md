@@ -89,6 +89,7 @@ class MyComponent implements OnChanges {
 Immutable.js helps which collections.
 
 # Pipes in Angular
-- pure pipes = date pipe
+- pure pipes = date pipe (NG exectutes the pipe when it detects changes to the input value or the value that it is binded on)
+with pure pipes if the underlying sematic does not change it will not trigger change detection, moving your calculations to pure pipes, it will improve your performance drastically.
 - impure pipes = async (it holds some state internally, so it holds a reference to the promise or observable)
 
